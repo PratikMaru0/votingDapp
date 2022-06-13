@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Decentralized Voting Application</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
+        type="application/javascript"></script>
+
+	<!-- <script src="https://cdn.ethers.io/scripts/ethers-v4.min.js" -->
+	<!-- charset="utf-8" -->
+	<!-- type="text/javascript"></script> -->
+        
+  </head>
+  <br>
+  <br>
+  <body>
+    <div class="container">
+    <script>
+      // TODO: window.onload
+      window.onload = function(){
+        // document.getElementById("metamaks").innerHTML = "result workin";
+        getvotes();        
+      }
+
+      function getvotes(){
+        // document.getElementById("metamaks").innerHTML = "result workin";
+
+        // .... abi of current contract that is deployed.
+        abi = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			}
+		],
+		"name": "delegate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "proposal",
+				"type": "uint256"
+			}
+		],
+		"name": "vote",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "chairperson",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "proposals",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "voteCount",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "voters",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "weight",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "voted",
+				"type": "bool"
+			},
+			{
+				"internalType": "address",
+				"name": "delegate",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "vote",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "winnername",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "winnername_",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "winningProposal",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "winningProposal_",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+
+        // getting provider
+        const provider = new ethers.providers.Web3Provider(ethereum);
+
+        // getting contract instance 
+        contract = new ethers.Contract("0xcfCb9729D6d146F8ACf06c6De42e17715AAfA0Dd",abi,provider);
+
+        // Displaying values from the smart contract.
+        var proposal0 = contract.proposals(0);
+        proposal0.then(function(result){
+          document.getElementById("proposal0name").innerHTML = result[0];
+          document.getElementById("vote0count").innerHTML = result[1];
+        })
+        var proposal1 = contract.proposals(1);
+        proposal1.then(function(result){
+          document.getElementById("proposal1name").innerHTML = result[0];
+          document.getElementById("vote1count").innerHTML = result[1];
+        })
+        var proposal2 = contract.proposals(2);
+        proposal2.then(function(result){
+          document.getElementById("proposal2name").innerHTML = result[0];
+          document.getElementById("vote2count").innerHTML = result[1];
+        })
+      }
+
+      function vote() {
+        abi = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			}
+		],
+		"name": "delegate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "proposal",
+				"type": "uint256"
+			}
+		],
+		"name": "vote",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "chairperson",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "proposals",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "voteCount",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "voters",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "weight",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "voted",
+				"type": "bool"
+			},
+			{
+				"internalType": "address",
+				"name": "delegate",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "vote",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "winnername",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "winnername_",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "winningProposal",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "winningProposal_",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+        // getting provider
+        const provider =  new ethers.providers.Web3Provider(ethereum);
+		provider.send('eth_requestAccounts', []);
+        // getting contract instance 
+        signer = provider.getSigner(0);
+
+        contract = new ethers.Contract("0xcfCb9729D6d146F8ACf06c6De42e17715AAfA0Dd",abi,signer);
+              
+        var proposalval = document.getElementById("ProposalSelect").value ;
+
+        var castvote = contract.vote(proposalval);
+        castvote.then(function(transaction){
+          document.getElementById("metamask").innerHTML = "Successfull. Please wait for 10 seconds for block to be mined. Refresh after confirmed transaction notification.";
+        })
+    }
+
+    function delegate() {
+      abi = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			}
+		],
+		"name": "delegate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "proposal",
+				"type": "uint256"
+			}
+		],
+		"name": "vote",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "chairperson",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "proposals",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "voteCount",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "voters",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "weight",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "voted",
+				"type": "bool"
+			},
+			{
+				"internalType": "address",
+				"name": "delegate",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "vote",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "winnername",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "winnername_",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "winningProposal",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "winningProposal_",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+
+      const provider = new ethers.providers.Web3Provider(ethereum);
+
+      // getting contract instance 
+      signer = provider.getSigner(0);
+
+      contract = new ethers.Contract("0xcfCb9729D6d146F8ACf06c6De42e17715AAfA0Dd",abi,signer);
+            
+      var addressval = document.getElementById("txtaddress").value ;
+
+      var delegatevote = contract.delegate(addressval);
+      delegatevote.then(function(transaction){
+        document.getElementById("metamask").innerHTML = "Delegated Successfully. ";
+})
+
+    }
+
+    </script>
+    <h2 class="text-center text-muted"><u>* Voting Decentralized App *</u></h2>
+    <h5 class="text-center text-muted">
+      Using Solidity , Ether.Js and Ethereum Blockchain
+    </h5>
+
+    <br>
+    <br>
+    <h6 class="text-center"> Contract deployed address :- <a style="text-decoration:none;" target="_blank" href="https://ropsten.etherscan.io/address/0xcfCb9729D6d146F8ACf06c6De42e17715AAfA0Dd">0xcfCb9729D6d146F8ACf06c6De42e17715AAfA0Dd</a> (Ropsten Test Network)</h6>
+    <div class="table-responsive" style="border-radius: 10px ;">
+      <table class="table table-bordered table-dark table-striped table-bordered" style="border-radius:10px;">
+        <thead>
+          <tr>
+            <th>Candidates</th>
+            <th>Votes</th>
+          </tr>
+        </thead>
+        <tbody >
+            <tr>
+                <td id="proposal0name"></td>
+                <td id="vote0count"></td>
+            </tr>
+            <tr>
+                <td id="proposal1name"></td>
+                <td id="vote1count"></td>
+            </tr>
+            <tr>
+                <td id="proposal2name"></td>
+                <td id="vote2count"></td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <select name="" id="ProposalSelect" >
+        <option value="-1" title="" >Please select your favorite blockchain to vote.</option>        
+        <option value="0" title="" >Bitcoin</option>        
+        <option value="1" title="Please select a candidate to vote." >Ethereum</option>        
+        <option value="2" title="Please select a candidate to vote." >Solana</option>        
+    </select>
+
+    <input id="Button1" type="button" onclick="vote()" class="btn btn-success btn-md mx-1" value=" &nbsp; Vote &nbsp;" />
+
+    &nbsp; or Delegate someone to vote &nbsp;
+
+    <input id="txtaddress"  type="text" class="rounded py-1 mt-2" />
+    <input type="button" id="Button1" onclick="delegate()" class="btn btn-danger btn-md mx-1 mt-1" value=" &nbsp; Delegate &nbsp;">
+    <br>
+    <br>
+    <h5 style="color: red;">Note :- One address can vote only once.</h5>
+    <h10 style="color: red;"> * Vote and Delegate button will not work if you have already voted.</h10>
+    <br>
+    <h5 id="metamask" style="color: green;"></h2>
+
+    </div>
+
+  </div>
+
+  
+  </body>
+  
+</html>
